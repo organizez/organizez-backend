@@ -84,4 +84,24 @@ router.post('/login', async function(req, res, next) {
   }
 });
 
+router.get('/:idUser', async function(req, res, next) {
+    let user = {};
+    var idUser = req.params.idUser;
+    await connectiondb.query(`SELECT first_name FROM Users WHERE id_user = '${idUser}'`, (err, rows, fields) => {
+      if (err) throw err
+      console.log(rows[0])
+      user = rows;
+      res.send(user);
+    })
+});
+
+router.get('/getAllUsers', async function(req, res, next) {
+  let users = {};
+  await connectiondb.query(`SELECT first_name, last_name, email FROM Users`, (err, rows, fields) => {
+    if (err) throw err
+    users = rows;
+    res.send(users);
+  })
+});
+
 module.exports = router;
