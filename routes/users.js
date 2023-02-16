@@ -84,23 +84,34 @@ router.post('/login', async function(req, res, next) {
   }
 });
 
-router.get('/:idUser', async function(req, res, next) {
+router.get('/getUser/:idUser', async function(req, res, next) {
     let user = {};
     var idUser = req.params.idUser;
     await connectiondb.query(`SELECT first_name FROM Users WHERE id_user = '${idUser}'`, (err, rows, fields) => {
       if (err) throw err
-      console.log(rows[0])
       user = rows;
       res.send(user);
     })
 });
 
-router.get('/getAllUsers', async function(req, res, next) {
-  let users = {};
-  await connectiondb.query(`SELECT first_name, last_name, email FROM Users`, (err, rows, fields) => {
+router.get('/getAllUsers/:iteration', async function(req, res, next) {
+  let users = [];
+  let iteration = req.params.iteration;
+  await connectiondb.query(`SELECT id_user, first_name, last_name, email, role FROM Users LIMIT 15 OFFSET ${iteration}`, (err, rows, fields) => {
     if (err) throw err
+    console.log(rows)
     users = rows;
     res.send(users);
+  })
+});
+
+router.get('/getUsersNumber', async function(req, res, next) {
+  let usersNumber = {};
+  await connectiondb.query(`SELECT count(*) as users_number FROM Users;`, (err, rows, fields) => {
+    if (err) throw err
+    console.log(rows)
+    usersNumber = rows;
+    res.send(usersNumber);
   })
 });
 
