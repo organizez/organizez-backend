@@ -19,3 +19,5 @@ router.post('/addForm', async function(req, res, next) {
         res.send("succes");
     })
 });
+
+module.exports = router;

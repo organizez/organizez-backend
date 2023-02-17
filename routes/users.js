@@ -109,7 +109,6 @@ router.get('/getUsersNumber', async function(req, res, next) {
   let usersNumber = {};
   await connectiondb.query(`SELECT count(*) as users_number FROM Users;`, (err, rows, fields) => {
     if (err) throw err
-    console.log(rows)
     usersNumber = rows;
     res.send(usersNumber);
   })
