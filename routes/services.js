@@ -2,9 +2,10 @@ var express = require('express');
 var router = express.Router();
 var { connectiondb } = require('../config-db');
 
-router.get('/getAllServices', async function(req, res, next) {
+router.get('/getAllServices/:iteration', async function(req, res, next) {
     let services = {};
-    await connectiondb.query(`SELECT s.id_service, s.name_service, s.location,s.image_service, s.short_description, s.long_description, p.company FROM Providers p, Services s where s.id_service = p.id_provider;`, (err, rows, fields) => {
+    let iteration = req.params.iteration;
+    await connectiondb.query(`SELECT s.id_service, s.name_service, s.location,s.image_service, s.short_description, s.long_description, p.company FROM Providers p, Services s where s.id_service = p.id_provider LIMIT 15 OFFSET ${iteration};`, (err, rows, fields) => {
         if (err) throw err
         services = rows;
         res.send(services);
@@ -26,6 +27,7 @@ router.post('/addService', async function(req, res, next) {
 });
 
 router.put('/updateService', async function(req, res, next) {
+    var idService = req.body.idService;
     var nameService = req.body.nameService;
     var location = req.body.location;
     var imageService = req.body.imageService;
@@ -33,7 +35,7 @@ router.put('/updateService', async function(req, res, next) {
     var longDescription = req.body.longDescription;
     var idProvider = req.body.idProvider;
 
-    await connectiondb.query(`UPDATE Services SET name_service = '${nameService}', location = '${location}', image_service = '${imageService}', short_description = '${shortDescription}', long_description = '${longDescription}', id_provider = '${idProvider}')`, (err, rows, fields) => {
+    await connectiondb.query(`UPDATE Services SET name_service = '${nameService}', location = '${location}', image_service = '${imageService}', short_description = '${shortDescription}', long_description = '${longDescription}', id_provider = '${idProvider}' where id_service = '${idService}')`, (err, rows, fields) => {
         if (err) throw err;
         res.send("succes");
     })
@@ -44,6 +46,15 @@ router.delete('/deleteService/:idService', async function(req, res, next) {
     await connectiondb.query(`DELETE FROM Services where id_service = '${idService}'`, (err, rows, fields) => {
         if (err) throw err;
         res.send("succes");
+    })
+});
+
+router.get('/getServicesNumber', async function(req, res, next) {
+    let servicesNumber = {};
+    await connectiondb.query(`SELECT count(*) as services_number FROM Services;`, (err, rows, fields) => {
+        if (err) throw err
+        servicesNumber = rows;
+        res.send(servicesNumber);
     })
 });
 module.exports = router;

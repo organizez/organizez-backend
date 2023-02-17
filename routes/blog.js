@@ -26,6 +26,7 @@ router.post('/addBlog', async function(req, res, next) {
 });
 
 router.put('/updateBlog', async function(req, res, next) {
+    var idArticle = req.body.idArticle;
     var nameArticle = req.body.nameArticle;
     var dateArticle = req.body.dateArticle;
     var author = req.body.author;
@@ -33,7 +34,7 @@ router.put('/updateBlog', async function(req, res, next) {
     var shortDescription = req.body.shortDescription;
     var text = req.body.text;
 
-    await connectiondb.query(`UPDATE Blog SET name_article = '${nameArticle}', date_article = '${dateArticle}', author = '${author}', image = '${image}', short_description = '${shortDescription}', text = '${text}')`, (err, rows, fields) => {
+    await connectiondb.query(`UPDATE Blog SET name_article = '${nameArticle}', date_article = '${dateArticle}', author = '${author}', image = '${image}', short_description = '${shortDescription}', text = '${text}' where id_article = '${idArticle}')`, (err, rows, fields) => {
         if (err) throw err;
         res.send("succes");
     })
