@@ -2,10 +2,10 @@ var express = require('express');
 var router = express.Router();
 var { connectiondb } = require('../config-db');
 
-router.get('/getAllCategoriesProviders', async function(req, res, next) {
+router.get('/getAllCategoriesProviders/:iteration', async function(req, res, next) {
     let categoriesProviders = {};
     let iteration = req.params.iteration;
-    await connectiondb.query(`SELECT id_category, category FROM Category_Providers LIMIT 15 OFFSET ${iteration};`, (err, rows, fields) => {
+    await connectiondb.query(`SELECT cp.id_category, cp.category, count(id_service) as services_number FROM Category_Providers cp LEFT OUTER JOIN Providers p ON cp.id_category = p.id_category LEFT OUTER JOIN Services s ON p.id_provider = s.id_provider GROUP BY cp.id_category, cp.category ORDER BY cp.id_category LIMIT 15 OFFSET ${iteration};`, (err, rows, fields) => {
         if (err) throw err
         categoriesProviders = rows;
         res.send(categoriesProviders);
