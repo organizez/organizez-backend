@@ -35,7 +35,7 @@ router.put('/updateService', async function(req, res, next) {
     var longDescription = req.body.longDescription;
     var idProvider = req.body.idProvider;
 
-    await connectiondb.query(`UPDATE Services SET name_service = '${nameService}', location = '${location}', image_service = '${imageService}', short_description = '${shortDescription}', long_description = '${longDescription}', id_provider = '${idProvider}' where id_service = '${idService}')`, (err, rows, fields) => {
+    await connectiondb.query(`UPDATE Services SET name_service = '${nameService}', location = '${location}', image_service = '${imageService}', short_description = '${shortDescription}', long_description = '${longDescription}', id_provider = '${idProvider}' where id_service = '${idService}'`, (err, rows, fields) => {
         if (err) throw err;
         res.send("succes");
     })
