@@ -11,6 +11,15 @@ router.get('/getAllBlogs', async function(req, res, next) {
     })
 });
 
+router.get('/getBlogsByDate', async function(req, res, next) {
+    let blogs = {};
+    await connectiondb.query(`SELECT image, name_article, short_description, date_article FROM Blog ORDER BY date_article DESC LIMIT 3;`, (err, rows, fields) => {
+        if (err) throw err
+        blogs = rows;
+        res.send(blogs);
+    })
+})
+
 router.post('/addBlog', async function(req, res, next) {
     var nameArticle = req.body.nameArticle;
     var dateArticle = req.body.dateArticle;
