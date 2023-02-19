@@ -12,6 +12,15 @@ router.get('/getAllCategoriesProviders/:iteration', async function(req, res, nex
     })
 });
 
+router.get('/getAllCategoriesProviders', async function(req, res, next) {
+    let categoriesProviders = {};
+    await connectiondb.query(`SELECT id_category, category, category_image FROM Category_Providers;`, (err, rows, fields) => {
+        if (err) throw err
+        categoriesProviders = rows;
+        res.send(categoriesProviders);
+    })
+});
+
 router.get('/getCategoriesProvidersNumber', async function(req, res, next) {
     let categoriesNumber = {};
     await connectiondb.query(`SELECT count(*) as categories_number FROM Category_Providers;`, (err, rows, fields) => {
