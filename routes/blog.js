@@ -2,6 +2,16 @@ var express = require('express');
 var router = express.Router();
 var { connectiondb } = require('../config-db');
 
+router.get('/getAllBlogs/:iteration', async function(req, res, next) {
+    let blogs = {};
+    let iteration = req.params.iteration;
+    await connectiondb.query(`SELECT id_article, name_article, date_article, author, image, short_description, text FROM Blog LIMIT 15 OFFSET ${iteration};`, (err, rows, fields) => {
+        if (err) throw err
+        blogs = rows;
+        res.send(blogs);
+    })
+});
+
 router.get('/getBlogArticlesNumber', async function(req, res, next) {
     let getBlogArticlesNumber = {};
     await connectiondb.query(`SELECT (*) as blog_articles_number FROM Blog;`, (err, rows, fields) => {
@@ -11,9 +21,10 @@ router.get('/getBlogArticlesNumber', async function(req, res, next) {
     })
 });
 
-router.get('/getAllBlogArticles', async function(req, res, next) {
+router.get('/getAllBlogArticles/:iteration', async function(req, res, next) {
     let blogArticles = {};
-    await connectiondb.query(`SELECT id_article, name_article, date_article, author, image, short_description, text FROM Blog LIMIT 5 OFFSET ${iteration};`, (err, rows, fields) => {
+    let iteration = req.params.iteration;
+    await connectiondb.query(`SELECT id_article, name_article, date_article, author, image, short_description, text FROM Blog LIMIT 5 OFFSET ${iteration} LIMIT 15 OFFSET ${iteration};`, (err, rows, fields) => {
         if (err) throw err
         blogArticles = rows;
         res.send(blogArticles);
@@ -28,6 +39,15 @@ router.get('/getBlogsByDate', async function(req, res, next) {
         res.send(blogs);
     })
 })
+
+router.get('/getBlogsNumber/', async function(req, res, next) {
+    let blogsNumber = {};
+    await connectiondb.query(`SELECT count( * ) as blogs_number FROM Blog;`, (err, rows, fields) => {
+        if (err) throw err
+        blogsNumber = rows;
+        res.send(blogsNumber);
+    })
+});
 
 router.post('/addBlog', async function(req, res, next) {
     var nameArticle = req.body.nameArticle;
