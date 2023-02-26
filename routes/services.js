@@ -5,7 +5,7 @@ var { connectiondb } = require('../config-db');
 router.get('/getAllServices/:iteration', async function(req, res, next) {
     let services = {};
     let iteration = req.params.iteration;
-    await connectiondb.query(`SELECT s.id_service, s.name_service, s.location,s.image_service, s.short_description, s.long_description, p.company FROM Providers p, Services s where s.id_service = p.id_provider LIMIT 15 OFFSET ${iteration};`, (err, rows, fields) => {
+    await connectiondb.query(`SELECT s.id_service, s.name_service, s.location, s.image1_service, s.image2_service, s.image3_service, s.image4_service, s.short_description, s.long_description, s.site_link, s.capacity, s.id_provider, s.id_city, s.id_category, p.company, cs.category, c.city FROM Providers p, Categories_Services cs, Services s, Cities c where s.id_category = cs.id_category and s.id_provider = p.id_provider and s.id_city = c.id_city LIMIT 15 OFFSET ${iteration};`, (err, rows, fields) => {
         if (err) throw err
         services = rows;
         res.send(services);
@@ -15,12 +15,19 @@ router.get('/getAllServices/:iteration', async function(req, res, next) {
 router.post('/addService', async function(req, res, next) {
     var nameService = req.body.nameService;
     var location = req.body.location;
-    var imageService = req.body.imageService;
+    var image1Service = req.body.image1Service;
+    var image2Service = req.body.image2Service;
+    var image3Service = req.body.image3Service;
+    var image4Service = req.body.image4Service;
     var shortDescription = req.body.shortDescription;
+    var siteLink = req.body.siteLink;
     var longDescription = req.body.longDescription;
     var idProvider = req.body.idProvider;
+    var idCity = req.body.idCity;
+    var idCategory = req.body.idCategory;
+    var capacity = req.body.capacity;
 
-    await connectiondb.query(`INSERT INTO Services(name_service, location, image_service, short_description, long_description, id_provider) VALUES ('${nameService}', '${location}', '${imageService}', '${shortDescription}', '${longDescription}', '${idProvider}')`, (err, rows, fields) => {
+    await connectiondb.query(`INSERT INTO Services(name_service, location, image1_service, image2_service, image3_service, image4_service, short_description, long_description, site_link, capacity, id_provider, id_city, id_category) VALUES ('${nameService}', '${location}', '${image1Service}', '${image2Service}', '${image3Service}', '${image4Service}', '${shortDescription}', '${longDescription}', '${siteLink}', '${capacity}', '${idProvider}', '${idCity}', '${idCategory}')`, (err, rows, fields) => {
         if (err) throw err;
         res.send("succes");
     })
@@ -30,12 +37,22 @@ router.put('/updateService', async function(req, res, next) {
     var idService = req.body.idService;
     var nameService = req.body.nameService;
     var location = req.body.location;
-    var imageService = req.body.imageService;
+    var image1Service = req.body.image1Service;
+    var image2Service = req.body.image2Service;
+    var image3Service = req.body.image3Service;
+    var image4Service = req.body.image4Service;
     var shortDescription = req.body.shortDescription;
     var longDescription = req.body.longDescription;
     var idProvider = req.body.idProvider;
+    var idCity = req.body.idCity;
+    var idCategory = req.body.idCategory;
+    var capacity = req.body.capacity;
+    var siteLink = req.body.siteLink;
+    // var company = req.body.company;
+    // var category = req.body.category;
+    // var city = req.body.city;
 
-    await connectiondb.query(`UPDATE Services SET name_service = '${nameService}', location = '${location}', image_service = '${imageService}', short_description = '${shortDescription}', long_description = '${longDescription}', id_provider = '${idProvider}' where id_service = '${idService}'`, (err, rows, fields) => {
+    await connectiondb.query(`UPDATE Services SET name_service = '${nameService}', location = '${location}', image1_service = '${image1Service}', image2_service = '${image2Service}', image3_service = '${image3Service}', image4_service = '${image4Service}', short_description = '${shortDescription}', long_description = '${longDescription}', site_link = '${siteLink}', id_provider = '${idProvider}', id_city = '${idCity}', id_category = '${idCategory}', capacity = '${capacity}' where id_service = '${idService}'`, (err, rows, fields) => {
         if (err) throw err;
         res.send("succes");
     })
