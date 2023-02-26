@@ -14,8 +14,8 @@ router.get('/getAllCounties', async function(req, res, next) {
 
 router.get('/countiesContainsName/:county', async function(req, res, next) {
     let counties = [];
-    let county = req.params.city;
-    await connectiondb.query('SELECT id_county, county FROM Counties WHERE county like %' + county + '%', (err, rows, fields) => {
+    let county = req.params.county;
+    await connectiondb.query("SELECT id_county, county FROM Counties WHERE county like '%" + county + "%'", (err, rows, fields) => {
       if (err) throw err
       counties = rows;
       res.send(counties);

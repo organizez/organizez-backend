@@ -3,12 +3,22 @@ var router = express.Router();
 var { connectiondb } = require('../config-db');
 
 router.get('/getAllServices/:iteration', async function(req, res, next) {
-    let services = {};
+    let services = [];
     let iteration = req.params.iteration;
-    await connectiondb.query(`SELECT s.id_service, s.name_service, s.location,s.image_service, s.short_description, s.long_description, p.company FROM Providers p, Services s where s.id_service = p.id_provider LIMIT 15 OFFSET ${iteration};`, (err, rows, fields) => {
+    await connectiondb.query(`SELECT s.id_service, s.name_service, s.location, s.image1_service, s.short_description, s.long_description, p.company, c.city, ct.county FROM Providers p, Services s, Cities c, Counties ct where s.id_service = p.id_provider and s.id_city = c.id_city and c.id_county = ct.id_county LIMIT 8 OFFSET ${iteration};`, (err, rows, fields) => {
         if (err) throw err
         services = rows;
         res.send(services);
+    })
+});
+
+router.get('/getServiceById/:idService', async function(req, res, next) {
+    let service = {};
+    let idService = req.params.idService;
+    await connectiondb.query(`SELECT s.id_service, s.name_service, s.image1_service, s.image2_service, s.image3_service, s.image4_service, s.short_description, s.long_description, s.site_link, s.capacity, p.company, s.location, c.city, ct.county, cs.category FROM Services s, Providers p, Categories_Services cs, Cities c, Counties ct where s.id_service = p.id_provider and s.id_city = c.id_city and c.id_county = ct.id_county and s.id_category = cs.id_category and s.id_service = ${idService};`, (err, rows, fields) => {
+        if (err) throw err
+        service = rows;
+        res.send(service[0]);
     })
 });
 
@@ -57,4 +67,5 @@ router.get('/getServicesNumber', async function(req, res, next) {
         res.send(servicesNumber);
     })
 });
+
 module.exports = router;

@@ -14,6 +14,7 @@ var categoryProvidersRouter = require('./routes/categoryProviders');
 var countiesRouter = require('./routes/counties');
 var formsRouter = require('./routes/forms');
 var servicesRouter = require('./routes/services');
+var portofolioRouter = require('./routes/portofolio');
 
 var app = express();
 
@@ -37,6 +38,7 @@ app.use('/categoryProviders', categoryProvidersRouter);
 app.use('/counties', countiesRouter);
 app.use('/forms', formsRouter);
 app.use('/services', servicesRouter);
+app.use('/portofolio', portofolioRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
