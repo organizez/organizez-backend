@@ -15,6 +15,10 @@ var countiesRouter = require('./routes/counties');
 var formsRouter = require('./routes/forms');
 var servicesRouter = require('./routes/services');
 var portofolioRouter = require('./routes/portofolio');
+var aboutUsRouter = require('./routes/aboutUs');
+var termsConditionsRouter = require('./routes/termsConditions');
+var dataPrivacyPolicyRouter = require('./routes/dataPrivacyPolicy');
+var anpcRouter = require('./routes/anpc');
 
 var app = express();
 
@@ -39,6 +43,10 @@ app.use('/counties', countiesRouter);
 app.use('/forms', formsRouter);
 app.use('/services', servicesRouter);
 app.use('/portofolio', portofolioRouter);
+app.use('/aboutUs', aboutUsRouter);
+app.use('/termsConditions', termsConditionsRouter);
+app.use('/dataPrivacyPolicy', dataPrivacyPolicyRouter);
+app.use('/anpc', anpcRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
