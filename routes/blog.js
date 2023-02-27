@@ -14,7 +14,7 @@ router.get('/getAllBlogs/:iteration', async function(req, res, next) {
 
 router.get('/getBlogArticlesNumber', async function(req, res, next) {
     let getBlogArticlesNumber = {};
-    await connectiondb.query(`SELECT (*) as blog_articles_number FROM Blog;`, (err, rows, fields) => {
+    await connectiondb.query(`SELECT count(*) as blog_articles_number FROM Blog;`, (err, rows, fields) => {
         if (err) throw err
         getBlogArticlesNumber = rows;
         res.send(getBlogArticlesNumber);
@@ -22,15 +22,23 @@ router.get('/getBlogArticlesNumber', async function(req, res, next) {
 });
 
 router.get('/getAllBlogArticles/:iteration', async function(req, res, next) {
-    let blogArticles = {};
+    let blogArticles = [];
     let iteration = req.params.iteration;
-    await connectiondb.query(`SELECT id_article, name_article, date_article, author, image, short_description, text FROM Blog LIMIT 5 OFFSET ${iteration} LIMIT 15 OFFSET ${iteration};`, (err, rows, fields) => {
+    await connectiondb.query(`SELECT id_article, name_article, date_article, author, image, short_description, text FROM Blog ORDER BY date_article desc LIMIT 5 OFFSET ${iteration};`, (err, rows, fields) => {
         if (err) throw err
         blogArticles = rows;
         res.send(blogArticles);
     })
 });
-
+router.get('/getBlogArticleById/:idBlogArticle', async function(req, res, next) {
+    let blogArticle = {};
+    let idBlogArticle = req.params.idBlogArticle;
+    await connectiondb.query(`SELECT id_article, name_article, date_article, author, image, short_description, text FROM Blog WHERE id_article = ${idBlogArticle};`, (err, rows, fields) => {
+        if (err) throw err
+        blogArticle = rows;
+        res.send(blogArticle[0]);
+    })
+});
 router.get('/getBlogsByDate', async function(req, res, next) {
     let blogs = {};
     await connectiondb.query(`SELECT image, name_article, short_description, date_article FROM Blog ORDER BY date_article DESC LIMIT 3;`, (err, rows, fields) => {
