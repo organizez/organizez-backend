@@ -20,5 +20,14 @@ router.get('/countiesContainsName/:county', async function(req, res, next) {
       counties = rows;
       res.send(counties);
     })
-  });
+});
+
+router.get('/getDistinctCounties', async function(req, res, next) {
+  let counties = [];
+  await connectiondb.query("SELECT distinct(ct.id_county), ct.county from Services s, Cities c, Counties ct where s.id_city = c.id_city and c.id_county = ct.id_county;", (err, rows, fields) => {
+    if (err) throw err
+    counties = rows;
+    res.send(counties);
+  })
+});
 module.exports = router;

@@ -2,10 +2,12 @@ var express = require('express');
 var router = express.Router();
 var { connectiondb } = require('../config-db');
 
-router.get('/getAllServices/:iteration', async function(req, res, next) {
+router.get('/getAllServices/:idCounty/:idServicesCategory/:iteration', async function(req, res, next) {
     let services = [];
+    let idCounty = req.params.idCounty;
+    let idServicesCategory = req.params.idServicesCategory;
     let iteration = req.params.iteration;
-    await connectiondb.query(`SELECT s.id_service, s.name_service, s.location, s.image1_service, s.image2_service, s.image3_service, s.image4_service, s.short_description, s.long_description, s.site_link, s.capacity, s.id_provider, s.id_city, s.id_category, p.company, cs.category, c.city FROM Providers p, Categories_Services cs, Services s, Cities c where s.id_category = cs.id_category and s.id_provider = p.id_provider and s.id_city = c.id_city LIMIT 15 OFFSET ${iteration};`, (err, rows, fields) => {
+    await connectiondb.query(`SELECT s.id_service, s.name_service, s.location, s.image1_service, s.image2_service, s.image3_service, s.image4_service, s.short_description, s.long_description, s.site_link, s.capacity, c.city, ct.county, cs.category, p.company FROM Services s, Categories_Services cs, Providers p, Cities c, Counties ct where s.id_city = c.id_city and c.id_county = ct.id_county and ct.id_county = ${idCounty} and s.id_category = cs.id_category and s.id_category = ${idServicesCategory} and s.id_provider = p.id_provider LIMIT 8 OFFSET ${iteration};`, (err, rows, fields) => {
         if (err) throw err
         services = rows;
         res.send(services);
@@ -76,9 +78,11 @@ router.delete('/deleteService/:idService', async function(req, res, next) {
     })
 });
 
-router.get('/getServicesNumber', async function(req, res, next) {
+router.get('/getServicesNumber/:idCounty/:idServicesCategory', async function(req, res, next) {
     let servicesNumber = {};
-    await connectiondb.query(`SELECT count(*) as services_number FROM Services;`, (err, rows, fields) => {
+    let idCounty = req.params.idCounty;
+    let idServicesCategory = req.params.idServicesCategory;
+    await connectiondb.query(`SELECT count(*) as services_number FROM Services s, Categories_Services cs, Providers p, Cities c, Counties ct where s.id_city = c.id_city and c.id_county = ct.id_county and ct.id_county = ${idCounty} and s.id_category = cs.id_category and s.id_category = ${idServicesCategory} and s.id_provider = p.id_provider;`, (err, rows, fields) => {
         if (err) throw err
         servicesNumber = rows;
         res.send(servicesNumber);
