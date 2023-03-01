@@ -14,9 +14,9 @@ router.get('/getAnpc', async function(req, res, next) {
 router.put('/updateAnpc', async function(req, res, next) {
     var idAnpc = req.body.idAnpc;
     var titleAnpc = req.body.titleAnpc;
-    var textAnpc = req.body.textAnpc;
+    var urlAnpc = req.body.urlAnpc;
 
-    await connectiondb.query(`UPDATE Anpc SET title_anpc = '${titleAnpc}', text_anpc = '${textAnpc}' where id_anpc = '${idAnpc}'`, (err, rows, fields) => {
+    await connectiondb.query(`UPDATE Anpc SET title_anpc = '${titleAnpc}', url_anpc = '${urlAnpc}' where id_anpc = '${idAnpc}'`, (err, rows, fields) => {
         if (err) throw err;
         res.send("succes");
     })
