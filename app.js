@@ -19,6 +19,7 @@ var aboutUsRouter = require('./routes/aboutUs');
 var termsConditionsRouter = require('./routes/termsConditions');
 var dataPrivacyPolicyRouter = require('./routes/dataPrivacyPolicy');
 var anpcRouter = require('./routes/anpc');
+var contactFormsRouter = require('./routes/contactForms');
 
 var app = express();
 
@@ -47,6 +48,7 @@ app.use('/aboutUs', aboutUsRouter);
 app.use('/termsConditions', termsConditionsRouter);
 app.use('/dataPrivacyPolicy', dataPrivacyPolicyRouter);
 app.use('/anpc', anpcRouter);
+app.use('/contactForms', contactFormsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
