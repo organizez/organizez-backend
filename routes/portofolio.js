@@ -12,16 +12,6 @@ router.get('/getAllImages/:iteration', async function(req, res, next) {
     })
 });
 
-router.get('/getAllImages/:iteration', async function(req, res, next) {
-    let portofolio = [];
-    let iteration = req.params.iteration;
-    await connectiondb.query(`SELECT id_image, image FROM Portofolio LIMIT 15 OFFSET ${iteration};`, (err, rows, fields) => {
-        if (err) throw err
-        portofolio = rows;
-        res.send(portofolio);
-    })
-});
-
 router.get('/getImagesNumber/', async function(req, res, next) {
     let imagesNumber = {};
     await connectiondb.query(`SELECT count( * ) as images_number FROM Portofolio;`, (err, rows, fields) => {

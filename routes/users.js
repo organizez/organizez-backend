@@ -71,6 +71,7 @@ router.post('/login', async function(req, res, next) {
           if(comparationResult) {
             response.status = "success";
             response.idUser = rows[0].id_user;
+            response.role = rows[0].role;
             res.send(response);
           } else {
             response.status = "mismatch";
