@@ -33,6 +33,38 @@ router.get('/getServicesByCountyAndCategory/:idCounty/:idServicesCategory/:itera
     })
 });
 
+router.get('/getServicesAllCountiesAndAllCategories/:iteration', async function(req, res, next) {
+    let services = [];
+    let iteration = req.params.iteration;
+    await connectiondb.query(`SELECT s.id_service, s.name_service, s.location, s.image1_service, s.image2_service, s.image3_service, s.image4_service, s.short_description, s.long_description, s.site_link, s.capacity, c.city, ct.county, cs.category, p.company FROM Services s, Categories_Services cs, Providers p, Cities c, Counties ct where s.id_city = c.id_city and c.id_county = ct.id_county and s.id_category = cs.id_category and s.id_provider = p.id_provider LIMIT 8 OFFSET ${iteration};`, (err, rows, fields) => {
+        if (err) throw err
+        services = rows;
+        res.send(services);
+    })
+});
+
+router.get('/getServicesAllCountiesAndSingleCategory/:idServicesCategory/:iteration', async function(req, res, next) {
+    let services = [];
+    let idServicesCategory = req.params.idServicesCategory;
+    let iteration = req.params.iteration;
+    await connectiondb.query(`SELECT s.id_service, s.name_service, s.location, s.image1_service, s.image2_service, s.image3_service, s.image4_service, s.short_description, s.long_description, s.site_link, s.capacity, c.city, ct.county, cs.category, p.company FROM Services s, Categories_Services cs, Providers p, Cities c, Counties ct where s.id_city = c.id_city and c.id_county = ct.id_county and s.id_category = cs.id_category and s.id_category = ${idServicesCategory} and s.id_provider = p.id_provider LIMIT 8 OFFSET ${iteration};`, (err, rows, fields) => {
+        if (err) throw err
+        services = rows;
+        res.send(services);
+    })
+});
+
+router.get('/getServicesSingleCountyAndAllCategories/:idCounty/:iteration', async function(req, res, next) {
+    let services = [];
+    let idCounty = req.params.idCounty;
+    let iteration = req.params.iteration;
+    await connectiondb.query(`SELECT s.id_service, s.name_service, s.location, s.image1_service, s.image2_service, s.image3_service, s.image4_service, s.short_description, s.long_description, s.site_link, s.capacity, c.city, ct.county, cs.category, p.company FROM Services s, Categories_Services cs, Providers p, Cities c, Counties ct where s.id_city = c.id_city and c.id_county = ct.id_county and ct.id_county = ${idCounty} and s.id_category = cs.id_category and s.id_provider = p.id_provider LIMIT 8 OFFSET ${iteration};`, (err, rows, fields) => {
+        if (err) throw err
+        services = rows;
+        res.send(services);
+    })
+});
+
 router.get('/getServiceById/:idService', async function(req, res, next) {
     let service = {};
     let idService = req.params.idService;
@@ -102,6 +134,35 @@ router.get('/getServicesNumberByCountyAndCategory/:idCounty/:idServicesCategory'
     let idCounty = req.params.idCounty;
     let idServicesCategory = req.params.idServicesCategory;
     await connectiondb.query(`SELECT count(*) as services_number FROM Services s, Categories_Services cs, Providers p, Cities c, Counties ct where s.id_city = c.id_city and c.id_county = ct.id_county and ct.id_county = ${idCounty} and s.id_category = cs.id_category and s.id_category = ${idServicesCategory} and s.id_provider = p.id_provider;`, (err, rows, fields) => {
+        if (err) throw err
+        servicesNumber = rows;
+        res.send(servicesNumber);
+    })
+});
+
+router.get('/getServicesNumberAllCountiesAndAllCategories', async function(req, res, next) {
+    let servicesNumber = {};
+    await connectiondb.query(`SELECT count(*) as services_number FROM Services s, Categories_Services cs, Providers p, Cities c, Counties ct where s.id_city = c.id_city and c.id_county = ct.id_county and s.id_category = cs.id_category and s.id_provider = p.id_provider;`, (err, rows, fields) => {
+        if (err) throw err
+        servicesNumber = rows;
+        res.send(servicesNumber);
+    })
+});
+
+router.get('/getServicesNumberAllCountiesAndSingleCategory/:idServicesCategory', async function(req, res, next) {
+    let servicesNumber = {};
+    let idServicesCategory = req.params.idServicesCategory;
+    await connectiondb.query(`SELECT count(*) as services_number FROM Services s, Categories_Services cs, Providers p, Cities c, Counties ct where s.id_city = c.id_city and c.id_county = ct.id_county and s.id_category = cs.id_category and s.id_category = ${idServicesCategory} and s.id_provider = p.id_provider;`, (err, rows, fields) => {
+        if (err) throw err
+        servicesNumber = rows;
+        res.send(servicesNumber);
+    })
+});
+
+router.get('/getServicesNumberSingleCountyAndAllCategories/:idCounty', async function(req, res, next) {
+    let servicesNumber = {};
+    let idCounty = req.params.idCounty;
+    await connectiondb.query(`SELECT count(*) as services_number FROM Services s, Categories_Services cs, Providers p, Cities c, Counties ct where s.id_city = c.id_city and c.id_county = ct.id_county and ct.id_county = ${idCounty} and s.id_category = cs.id_category and s.id_provider = p.id_provider;`, (err, rows, fields) => {
         if (err) throw err
         servicesNumber = rows;
         res.send(servicesNumber);

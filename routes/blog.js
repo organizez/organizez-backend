@@ -41,7 +41,7 @@ router.get('/getBlogArticleById/:idBlogArticle', async function(req, res, next) 
 });
 router.get('/getBlogsByDate', async function(req, res, next) {
     let blogs = {};
-    await connectiondb.query(`SELECT image, name_article, short_description, date_article FROM Blog ORDER BY date_article DESC LIMIT 3;`, (err, rows, fields) => {
+    await connectiondb.query(`SELECT id_article, image, name_article, short_description, date_article FROM Blog ORDER BY date_article DESC LIMIT 3;`, (err, rows, fields) => {
         if (err) throw err
         blogs = rows;
         res.send(blogs);
