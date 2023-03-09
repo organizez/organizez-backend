@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
+var bodyParser = require('body-parser');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -20,12 +21,14 @@ var termsConditionsRouter = require('./routes/termsConditions');
 var dataPrivacyPolicyRouter = require('./routes/dataPrivacyPolicy');
 var anpcRouter = require('./routes/anpc');
 var contactFormsRouter = require('./routes/contactForms');
-
+var uploadFilesDigitalOceanRouter = require('./routes/uploadFilesDigitalOcean');
 var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+app.use(bodyParser.json({ limit: '50mb' }))
+app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -49,6 +52,8 @@ app.use('/termsConditions', termsConditionsRouter);
 app.use('/dataPrivacyPolicy', dataPrivacyPolicyRouter);
 app.use('/anpc', anpcRouter);
 app.use('/contactForms', contactFormsRouter);
+app.use('/uploadFilesDigitalOcean', uploadFilesDigitalOceanRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
