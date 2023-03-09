@@ -11,7 +11,7 @@ async function contactFormEmail(email, message) {
 
         await transporter.sendMail({
             from: '"Organizez.ro <contact@organizez.ro>', 
-            to: 'boangiu.alexandra@yahoo.com',
+            to: 'boangiu.alexandra@yahoo.com, contact@organizez.ro',
             subject: subject,
             html: template,
         }, async (error, info) => {
