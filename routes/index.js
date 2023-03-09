@@ -1,19 +1,14 @@
 var express = require('express');
 var router = express.Router();
-var { connectiondb } = require('../config-db');
+const sendContactFormEmail = require('../emailsTemplates/contactFormEmail');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+
+router.post('/contact-form-email', async function(req, res, next) {
+  var email = req.body.email;
+  var details = req.body.details;
+  sendContactFormEmail.contactFormEmail(email, details);
+  res.send("succes");
 });
 
-router.get('/test-database', async function(req, res, next) {
-  let cities = [];
-  await connectiondb.query('SELECT * FROM Cities', (err, rows, fields) => {
-    if (err) throw err
-    cities = rows;
-    res.send(cities);
-  })
-});
 
 module.exports = router;
