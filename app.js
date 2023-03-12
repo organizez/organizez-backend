@@ -56,7 +56,7 @@ app.use('/dataPrivacyPolicy', dataPrivacyPolicyRouter);
 app.use('/anpc', anpcRouter);
 app.use('/contactForms', contactFormsRouter);
 // app.use('/uploadFilesDigitalOcean', uploadFilesDigitalOceanRouter);
-app.use('/facilites', facilitiesRouter);
+app.use('/facilities', facilitiesRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
