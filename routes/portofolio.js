@@ -47,4 +47,14 @@ router.delete('/deleteImage/:idImage', async function(req, res, next) {
     })
 });
 
+router.get('/getImageById/:idImage', async function(req, res, next) {
+    let portofolioImage = {};
+    let idImage = req.params.idImage;
+    await connectiondb.query(`SELECT id_image, image FROM Portofolio WHERE id_image = ${idImage};`, (err, rows, fields) => {
+        if (err) throw err
+        portofolioImage = rows;
+        res.send(portofolioImage[0]);
+    })
+});
+
 module.exports = router;
