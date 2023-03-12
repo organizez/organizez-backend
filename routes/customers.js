@@ -21,4 +21,23 @@ router.get('/getAllCustomers/:iteration', async function(req, res, next) {
     })
 });
 
+router.post('/addCustomer', async function(req, res, next) {
+    var emailAccount = req.body.emailAccount;
+    var passwordAccount = req.body.passwordAccount;
+    var lastNameRepresentative = req.body.lastNameRepresentative;
+    var firstNameRepresentative = req.body.firstNameRepresentative;
+    var phoneRepresentative = req.body.phoneRepresentative;
+    var emailRepresentative = req.body.emailRepresentative;
+    var nameCompany = req.body.nameCompany;
+    var subscriptionType = req.body.subscriptionType;
+
+    await connectiondb.query(`INSERT INTO Customers(email_account, password_account, last_name_representative, first_name_representative
+        , phone_representative, email_representative, name_company, subscription_type)
+         VALUES ('${emailAccount}', '${passwordAccount}', '${lastNameRepresentative}', '${firstNameRepresentative}',
+          '${phoneRepresentative}', '${emailRepresentative}', '${nameCompany}', '${subscriptionType}')`, (err, rows, fields) => {
+        if (err) throw err;
+        res.send("succes");
+    })
+
+});
 module.exports = router;
