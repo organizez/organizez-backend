@@ -22,7 +22,8 @@ var termsConditionsRouter = require('./routes/termsConditions');
 var dataPrivacyPolicyRouter = require('./routes/dataPrivacyPolicy');
 var anpcRouter = require('./routes/anpc');
 var contactFormsRouter = require('./routes/contactForms');
-var uploadFilesDigitalOceanRouter = require('./routes/uploadFilesDigitalOcean');
+// var uploadFilesDigitalOceanRouter = require('./routes/uploadFilesDigitalOcean');
+var facilitiesRouter = require('./routes/facilities');
 var app = express();
 
 // view engine setup
@@ -55,7 +56,7 @@ app.use('/dataPrivacyPolicy', dataPrivacyPolicyRouter);
 app.use('/anpc', anpcRouter);
 app.use('/contactForms', contactFormsRouter);
 app.use('/uploadFilesDigitalOcean', uploadFilesDigitalOceanRouter);
-
+app.use('/facilites', facilitiesRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

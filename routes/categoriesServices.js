@@ -12,7 +12,7 @@ router.get('/getAllCategoriesServices/:iteration', async function(req, res, next
     })
 });
 
-router.get('/getAllCategoriesServices', async function(req, res, next) {
+router.get('/getAllServicesCategories', async function(req, res, next) {
     let categoriesServices = {};
     await connectiondb.query(`SELECT id_category, category, category_image FROM Services_Categories;`, (err, rows, fields) => {
         if (err) throw err
