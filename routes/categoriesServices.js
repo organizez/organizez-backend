@@ -21,6 +21,16 @@ router.get('/getAllServicesCategories', async function(req, res, next) {
     })
 });
 
+router.get('/getCategoryServiceById/:idCategory', async function(req, res, next) {
+    let categoryService = {};
+    let idCategory = req.params.idCategory;
+    await connectiondb.query(`SELECT id_category, category, category_image FROM Blog WHERE id_category = ${idCategory};`, (err, rows, fields) => {
+        if (err) throw err
+        categoryService = rows;
+        res.send(categoryService[0]);
+    })
+});
+
 router.get('/getCategoriesServicesNumber', async function(req, res, next) {
     let categoriesNumber = {};
     await connectiondb.query(`SELECT count(*) as categories_number FROM Services_Categories;`, (err, rows, fields) => {
