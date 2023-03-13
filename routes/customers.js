@@ -131,12 +131,22 @@ router.put('/updateCustomer', async function(req, res, next) {
     var image8 = req.body.image8;
     var image9 = req.body.image9;
     var image10 = req.body.image10;
+    var image11 = req.body.image11;
+    var image12 = req.body.image12;
+    var image13 = req.body.image13;
+    var image14 = req.body.image14;
+    var image15 = req.body.image15;
+    var image16 = req.body.image16;
+    var image17 = req.body.image17;
+    var image18 = req.body.image18;
+    var image19 = req.body.image19;
+    var image20 = req.body.image20;
     var idCategory = req.body.idCategory;
     var idCity = req.body.idCity;
     var selectedFacilitiesOptions = req.body.selectedFacilitiesOptions;
     await connectiondb.query(`UPDATE Customers SET last_name_representative = '${lastNameRepresentative}', first_name_representative = '${firstNameRepresentative}', phone_representative = '${phoneRepresentative}', email_representative = '${emailRepresentative}', name_company = '${company}', subscription_type = '${subscriptionType}' WHERE id_customer = '${idCustomer}';`, async(err, rows, fields) => {
         if (err) throw err;
-        await connectiondb.query(`UPDATE Customers_Services SET name = '${name}', location = '${location}', website = '${website}', phone = '${phone}', short_description = '${shortDescription}', long_description = '${longDescription}', number_hall = '${numberHall}', minimum_capacity =  '${minimumCapacity}', maximum_capacity = '${maximumCapacity}', image1 = '${image1}', image2 = '${image2}', image3 = '${image3}', image4 = '${image4}', image5 = '${image5}', image6 = '${image6}', image7 = '${image7}', image8 = '${image8}', image9 = '${image9}', image10 = '${image10}', id_customer = '${idCustomer}', id_category = '${idCategory}', id_city = '${idCity}' WHERE id_customer_service = '${idCustomerService}'`, async(err, rows, fields) => {
+        await connectiondb.query(`UPDATE Customers_Services SET name = '${name}', location = '${location}', website = '${website}', phone = '${phone}', short_description = '${shortDescription}', long_description = '${longDescription}', number_hall = '${numberHall}', minimum_capacity =  '${minimumCapacity}', maximum_capacity = '${maximumCapacity}', image1 = '${image1}', image2 = '${image2}', image3 = '${image3}', image4 = '${image4}', image5 = '${image5}', image6 = '${image6}', image7 = '${image7}', image8 = '${image8}', image9 = '${image9}', image10 = '${image10}', image11 = '${image11}', image12 = '${image12}', image13 = '${image13}', image14 = '${image14}', image15 = '${image15}', image16 = '${image16}', image17 = '${image17}', image18 = '${image18}', image19 = '${image19}', image20 = '${image20}', id_customer = '${idCustomer}', id_category = '${idCategory}', id_city = '${idCity}' WHERE id_customer_service = '${idCustomerService}'`, async(err, rows, fields) => {
             if (err) throw err;
             await connectiondb.query(`DELETE FROM Facilities_Options WHERE id_customer_service = '${idCustomerService}'`, async(err, rows, fields) => {
                 if (err) throw err;
