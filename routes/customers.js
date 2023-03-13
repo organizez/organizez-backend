@@ -22,21 +22,51 @@ router.get('/getAllCustomers/:iteration', async function(req, res, next) {
 });
 
 router.post('/addCustomer', async function(req, res, next) {
-    var emailAccount = req.body.emailAccount;
-    var passwordAccount = req.body.passwordAccount;
+    console.log(req.body)
     var lastNameRepresentative = req.body.lastNameRepresentative;
     var firstNameRepresentative = req.body.firstNameRepresentative;
     var phoneRepresentative = req.body.phoneRepresentative;
     var emailRepresentative = req.body.emailRepresentative;
-    var nameCompany = req.body.nameCompany;
+    var company = req.body.company;
     var subscriptionType = req.body.subscriptionType;
-
-    await connectiondb.query(`INSERT INTO Customers(email_account, password_account, last_name_representative, first_name_representative
-        , phone_representative, email_representative, name_company, subscription_type)
-         VALUES ('${emailAccount}', '${passwordAccount}', '${lastNameRepresentative}', '${firstNameRepresentative}',
-          '${phoneRepresentative}', '${emailRepresentative}', '${nameCompany}', '${subscriptionType}')`, (err, rows, fields) => {
+    var name = req.body.name;
+    var location = req.body.location;
+    var website = req.body.website;
+    var phone = req.body.phone;
+    var shortDescription = req.body.shortDescription;
+    var longDescription = req.body.longDescription;
+    var numberHall = req.body.numberHall;
+    var minimumCapacity = req.body.minimumCapacity;
+    var maximumCapacity = req.body.maximumCapacity;
+    var image1 = req.body.image1;
+    var image2 = req.body.image2;
+    var image3 = req.body.image3;
+    var image4 = req.body.image4;
+    var image5 = req.body.image5;
+    var image6 = req.body.image6;
+    var image7 = req.body.image7;
+    var image8 = req.body.image8;
+    var image9 = req.body.image9;
+    var image10 = req.body.image10;
+    var idCategory = req.body.idCategory;
+    var idCity = req.body.idCity;
+    var selectedFacilitiesOptions = req.body.selectedFacilitiesOptions;
+    await connectiondb.query(`INSERT INTO Customers(last_name_representative, first_name_representative, phone_representative, email_representative, name_company, subscription_type) VALUES ('${lastNameRepresentative}', '${firstNameRepresentative}', '${phoneRepresentative}', '${emailRepresentative}', '${company}', '${subscriptionType}')`, async (err, rows, fields) => {
         if (err) throw err;
-        res.send("succes");
+        let idCustomer = "" + rows.insertId;
+        await connectiondb.query(`INSERT INTO Customers_Services(name, location, website, phone, short_description, long_description, number_hall, minimum_capacity, maximum_capacity, image1, image2, image3, image4, image5, image6, image7, image8, image9, image10, id_customer, id_category, id_city) VALUES ('${name}', '${location}', '${website}', '${phone}', '${shortDescription}', '${longDescription}', '${numberHall}', '${minimumCapacity}', '${maximumCapacity}', '${image1}', '${image2}', '${image3}', '${image4}', '${image5}', '${image6}','${image7}', '${image8}', '${image9}', '${image10}','${idCustomer}', '${idCategory}', '${idCity}')`, async (err, rows, fields) => {
+           if (err) throw err;
+           let idCustomerService = "" + rows.insertId;
+           if(selectedFacilitiesOptions.length > 0) {
+                for(var i = 0; i < selectedFacilitiesOptions.length; i++) {
+                    await connectiondb.query(`INSERT INTO Facilities_Options(id_customer_service, id_facility) VALUES ('${idCustomerService}', '${selectedFacilitiesOptions[i]}')`, (err, rows, fields) => {
+                        if (err) throw err;
+                    })
+                }
+           }
+  
+           res.send("succes");
+       })
     })
 
 });
