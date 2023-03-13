@@ -51,7 +51,7 @@ router.put('/updateCategoriesServices', async function(req, res, next) {
     })
 });
 
-router.delete('/deleteCategori/:idCategory', async function(req, res, next) {
+router.delete('/deleteCategory/:idCategory', async function(req, res, next) {
     var idCategory = req.params.idCategory;
     await connectiondb.query(`DELETE FROM Services_Categories where id_category = '${idCategory}'`, (err, rows, fields) => {
         if (err) throw err;

@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var { connectiondb } = require('../config-db');
 
-router.post('/addCustomersServices', async function(req, res, next) {
+router.post('/addCustomerService', async function(req, res, next) {
     var name = req.body.name;
     var location = req.body.location;
     var website = req.body.website;
